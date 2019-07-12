@@ -4,14 +4,14 @@ public class Reference extends Content{
 
 	private Cell cell ;
 	public Reference(Cell cell) {
-		super(cell);		
+		//super(cell);		
 		this.cell = cell;
 	}
 
 	@Override
 	public String value() {
 		// TODO Auto-generated method stub
-		return cell.value();
+		return Float.toString(cell.data());
 	}
 
 	@Override

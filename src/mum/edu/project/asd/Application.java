@@ -12,6 +12,8 @@ public class Application
 		director.buildSample();								// Build sample cells, for testing
 
 		System.out.println(director.contents());			// Quick view of contents
+		
+		System.out.println("Examine");
 		System.out.println(director.examine());				// Quick view of formulas
 		
 	}

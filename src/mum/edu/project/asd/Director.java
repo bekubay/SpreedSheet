@@ -33,6 +33,11 @@ public class Director
 		spreadsheet.cell(i, j).setContent(new NumberCell(f));
 		
 	}
+	// numerical expression sprint3
+	public void WriteInCellExpression(int r,int c , NumericOperation obj) {
+		
+		//spreadsheet.cell(r, c).setContent(new NumericOperation());
+	}
 	
 	public String describe()
 	{
@@ -61,6 +66,7 @@ public class Director
 		writeInCellText(3, 1, "Rental Car:");
 		
 		writeInCellNumber(3, 2, 295.85F);
+		
 
 		writeInCellText(4, 1, "Hotel:");
 		
@@ -75,12 +81,16 @@ public class Director
 		writeInCellText(5, 4, "This is all our meals");
 
 		writeInCellText(7, 1, "Sub-total:");
+		writeInCellNumber(7, 2, spreadsheet.cell(1, 2).data());
 		
 		
 		//reference goes here 
 		writeInCellText(7, 4, "This is just a reference to [1, 2], to test the \"Reference\" class and mechanism");
 		Reference ref = new Reference(cell(1,2));
-		cell(7,2).setContent(ref);
+		
+		
+	cell(7,2).setContent(ref);
+	
 		
 		
 		writeInCellText(8, 1, "Tax:");							// Tax factor label
@@ -101,6 +111,7 @@ public class Director
 		
 
 		writeInCellText(12, 1, "Installments:");
+		
 
 	}
 

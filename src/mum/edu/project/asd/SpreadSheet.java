@@ -71,6 +71,8 @@ public class SpreadSheet {
 	public String describe()						// Returns a string that reflects the spreadsheet's contents and formulas
 	{
 		StringBuilder contents = new StringBuilder();
+		
+		
 
 		for (int row = 1; row <= size; row++)
 		{
@@ -86,6 +88,7 @@ public class SpreadSheet {
 	public String examine()									// Returns a textual list describing the contents of each cell
 	{
 		StringBuilder examination = new StringBuilder();
+	//	System.out.println("1 \t\t\t 2\t\t\t  3\t\t\t 4\t\t\t  \n \n");
 
 		for (int row = 1; row <= size; row++)
 		{
