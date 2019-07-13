@@ -12,6 +12,7 @@ public class NumberCell extends Content{
 	public  NumberCell(float num) {
 		this.num = num;
 	}
+	
 	@Override
 	public String value() {
 		

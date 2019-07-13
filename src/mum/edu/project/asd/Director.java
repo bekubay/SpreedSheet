@@ -1,5 +1,10 @@
 package mum.edu.project.asd;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.text.html.HTMLDocument.HTMLReader.SpecialAction;
+
 public class Director
 {
 	private SpreadSheet spreadsheet;	
@@ -65,7 +70,16 @@ public class Director
 
 		writeInCellText(3, 1, "Rental Car:");
 		
-		writeInCellNumber(3, 2, 295.85F);
+		//adding the total of rental car
+		Add add = new Add();
+		NumberCell num1 = new NumberCell(295);
+		NumberCell num2 = new NumberCell(0.85f);
+		add.addContent(num1);
+		add.addContent(num2);
+		
+		spreadsheet.cell(3, 2).setContent(add);
+		cell(3, 2).setContent(add);
+		//writeInCellNumber(3, 2, add);
 		
 
 		writeInCellText(4, 1, "Hotel:");
@@ -81,15 +95,45 @@ public class Director
 		writeInCellText(5, 4, "This is all our meals");
 
 		writeInCellText(7, 1, "Sub-total:");
-		writeInCellNumber(7, 2, spreadsheet.cell(1, 2).data());
+		
+		
+		//getting the subtotal 
+		Add subTotal = new Add();
+		
+		for (int i = 1; i <= 5; i++) {
+		subTotal.addContent(new Reference(spreadsheet.cell(i, 2)));
+		}
+		spreadsheet.cell(7, 2).setContent(subTotal);
+		cell(7, 2).setContent(subTotal);
+		
+		//subtracting values
+		Subtract subtract = new Subtract();
+		for(int i = 1 ; i <= 5 ; i++) {
+			subtract.subContent(new Reference(spreadsheet.cell(i, 2)));
+		}
+		
+		spreadsheet.cell(7, 3).setContent(subtract);
+		cell(7, 3).setContent(subtract);
+		
+		
+		//muliplying values
+		Multiply multiply = new Multiply();
+		for(int i = 1; i <= 5 ; i++) {
+			multiply.multContent(new Reference(spreadsheet.cell(i, 2)));
+		}
+		
+		spreadsheet.cell(7, 4).setContent(multiply);
+		cell(7, 4).setContent(multiply);
+		
+		//writeInCellNumber(7, 2, spreadsheet.cell(1, 2).data());
 		
 		
 		//reference goes here 
-		writeInCellText(7, 4, "This is just a reference to [1, 2], to test the \"Reference\" class and mechanism");
+		writeInCellText(7, 5, "This is just a reference to [1, 2], to test the \"Reference\" class and mechanism");
 		Reference ref = new Reference(cell(1,2));
 		
 		
-	cell(7,2).setContent(ref);
+	   //cell(7,2).setContent(ref);
 	
 		
 		
@@ -100,7 +144,21 @@ public class Director
 		
 		
 		writeInCellText(9, 1, "Total:");
-
+		
+		//calculating total
+		
+		Multiply multiply2 = new Multiply();
+		multiply2.multContent(new Reference(cell(7, 2)));
+		multiply2.multContent(new Reference(cell(8,2))); 
+		
+		
+		Subtract subtract2 = new Subtract();
+		subtract2.subContent(new Reference(cell(7, 2)));
+		subtract2.subContent(new NumberCell(multiply2.data()));
+		
+		spreadsheet.cell(9, 2).setContent(subtract2);
+		cell(9, 2).setContent(subtract2);
+		
 		writeInCellText(10, 1, "Partners: ");
 		
 		writeInCellNumber(10, 2, 4);
@@ -111,6 +169,13 @@ public class Director
 		
 
 		writeInCellText(12, 1, "Installments:");
+		Division division = new Division();
+		division.divideContent(new Reference(cell(9, 2)));
+		division.divideContent(new Reference(cell(10, 2)));
+		division.divideContent(new Reference(cell(11, 2)));
+		
+		spreadsheet.cell(12, 2).setContent(division);
+		cell(12, 2).setContent(division);
 		
 
 	}

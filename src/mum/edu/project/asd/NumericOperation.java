@@ -1,5 +1,5 @@
 package mum.edu.project.asd;
 
-public class NumericOperation {
+public abstract class NumericOperation extends Content{
 
 }
