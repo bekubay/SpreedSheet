@@ -1,16 +1,16 @@
 package mum.edu.project.asd;
 
-public class TextCell extends Content
+public class Text extends Content
 {
 	private StringBuilder text = new StringBuilder();
 
-	public TextCell(String str){ append(str);}
+	public Text(String str){ append(str);}
 	
 	public Boolean isText() { return true; }
 
 	public 	String value() { return text.toString(); }
 
-	public TextCell append(String txt)
+	public Text append(String txt)
 	{
 		if (txt != null)
 			text.append(txt);

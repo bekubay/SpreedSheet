@@ -41,6 +41,7 @@ public class Add extends NumericOperation {
 	}
 
 	public void addContent(Content content) {
+		
 		addNumber += content.data();
 		if (content instanceof Reference) {
 			ref.add((Reference) content);

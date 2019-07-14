@@ -1,6 +1,6 @@
 package mum.edu.project.asd;
 
-public class NumberCell extends Content{
+public class Number extends Content{
 	
 	
 	private float num;
@@ -9,7 +9,7 @@ public class NumberCell extends Content{
 		return true;
 	}
 	
-	public  NumberCell(float num) {
+	public  Number(float num) {
 		this.num = num;
 	}
 	
