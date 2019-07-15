@@ -48,19 +48,19 @@ public class Director {
 
 	public void buildSample() // Build sample data for development purpose
 	{
-		writeInCellText(1, 1, "Airfare:");
+		setCell(1, 1, "Airfare:");
 
-		writeInCellNumber(1, 2, 485.15f);
+		setCell(1, 2, "485.15f");
 
-		writeInCellText(1, 3, "");
+		setCell(1, 3, "");
 
-		writeInCellText(1, 4, "What we pay to the airlines");
+		setCell(1, 4, "What we pay to the airlines");
 
-		writeInCellText(2, 1, "Taxi:");
+		setCell(2, 1, "Taxi:");
 
-		writeInCellNumber(2, 2, 118);
+		setCell(2, 2, "118");
 
-		writeInCellText(3, 1, "Rental Car:");
+		setCell(3, 1, "Rental Car:");
 
 		// adding the total of rental car
 		Add add = new Add();
@@ -83,9 +83,9 @@ public class Director {
 
 		setCell(5, 3, "");
 
-		writeInCellText(5, 4, "This is all our meals");
+		setCell(5, 4, "This is all our meals");
 
-		writeInCellText(7, 1, "Sub-total:");
+		setCell(7, 1, "Sub-total:");
 
 		// getting the subtotal
 		Add subTotal = new Add();
@@ -117,16 +117,16 @@ public class Director {
 		// writeInCellNumber(7, 2, spreadsheet.cell(1, 2).data());
 
 		// reference goes here
-		writeInCellText(7, 4, "This is just a reference to [1, 2], to test the \"Reference\" class and mechanism");
+		setCell(7, 4, "This is just a reference to [1, 2], to test the \"Reference\" class and mechanism");
 		Reference ref = new Reference(cell(1, 2));
 
 		// cell(7,2).setContent(ref);
 
-		writeInCellText(8, 1, "Tax:"); // Tax factor label
+		setCell(8, 1, "Tax:"); // Tax factor label
 
-		writeInCellNumber(8, 2, 0.15f);
+		setCell(8, 2, "0.15f");
 
-		writeInCellText(9, 1, "Total:");
+		setCell(9, 1, "Total:");
 
 		// calculating total
 
@@ -146,13 +146,13 @@ public class Director {
 		group.evaluate(new Reference(cell(7, 2)), group, "-");
 		
 
-		writeInCellText(10, 1, "Partners: ");
+		setCell(10, 1, "Partners: ");
 
-		writeInCellNumber(10, 2, 4);
+		setCell(10, 2, "4");
 
-		writeInCellText(11, 1, "Months: ");
+		setCell(11, 1, "Months: ");
 
-		writeInCellNumber(11, 2, 12);
+		setCell(11, 2, "12");
 
 		writeInCellText(12, 1, "Installments:");
 		Division division = new Division();
