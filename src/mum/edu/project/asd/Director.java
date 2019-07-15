@@ -50,7 +50,7 @@ public class Director {
 	{
 		setCell(1, 1, "Airfare:");
 
-		setCell(1, 2, "485.15f");
+		setCell(1, 2, "485.15");
 
 		setCell(1, 3, "");
 
@@ -124,7 +124,7 @@ public class Director {
 
 		setCell(8, 1, "Tax:"); // Tax factor label
 
-		setCell(8, 2, "0.15f");
+		setCell(8, 2, "0.15");
 
 		setCell(9, 1, "Total:");
 
@@ -175,13 +175,41 @@ public class Director {
 		}
 	}
 
-	public  boolean interpret(String str) {
-		try {
-			Float.parseFloat(str);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
+	/*
+	 * public boolean interpret(String str) { try { Float.parseFloat(str); return
+	 * true; } catch (NumberFormatException e) { return false; } }
+	 */
+	
+	//check if it is numberic value or string
+	public static boolean interpret(String string) {
+	    if (string == null || string.isEmpty()) {
+	        return false;
+	    }
+	    int i = 0;
+	    int stringLength = string.length();
+	    if (string.charAt(0) == '-') {
+	        if (stringLength > 1) {
+	            i++;
+	        } else {
+	            return false;
+	        }
+	    }
+	    if (!Character.isDigit(string.charAt(i))
+	            || !Character.isDigit(string.charAt(stringLength - 1))) {
+	        return false;
+	    }
+	    i++;
+	    stringLength--;
+	    if (i >= stringLength) {
+	        return true;
+	    }
+	    for (; i < stringLength; i++) {
+	        if (!Character.isDigit(string.charAt(i))
+	                && string.charAt(i) != '.') {
+	            return false;
+	        }
+	    }
+	    return true;
 	}
 
 }
