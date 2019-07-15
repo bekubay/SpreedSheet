@@ -6,9 +6,9 @@ import java.util.List;
 public class Multiply extends NumericOperation {
 
 	private float products = 1.0f;
-	List<Reference> ref = new ArrayList<Reference>();
+	List<Content> ref = new ArrayList<Content>();
 
-	public List<Reference> getRef() {
+	public List<Content> getRef() {
 		return ref;
 	}
 
@@ -45,9 +45,8 @@ public class Multiply extends NumericOperation {
 	public void multContent(Content content) {
 
 		products *= content.data();
-		if (content instanceof Reference) {
-			ref.add((Reference) content);
-		}
+
+		ref.add(content);
 	}
 
 }

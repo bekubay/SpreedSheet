@@ -3,12 +3,11 @@ package mum.edu.project.asd;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Subtract extends NumericOperation {
 
 	private float subResult = 0.0f;
 	private int counter = 0;
-	List<Reference> ref = new ArrayList<Reference>();
+	List<Content> ref = new ArrayList<Content>();
 
 	@Override
 	public String value() {
@@ -40,16 +39,16 @@ public class Subtract extends NumericOperation {
 	}
 
 	public void subContent(Content content) {
-		
-		if(counter == 0) {
+
+		if (counter == 0) {
 			subResult += content.data();
-			ref.add((Reference) content);
+			ref.add(content);
 			counter++;
-		}else {
-		subResult -= content.data();
-		if (content instanceof Reference) {
-			ref.add((Reference) content);
+		} else {
+			subResult -= content.data();
+
+			ref.add(content);
+
 		}
-	}
 	}
 }

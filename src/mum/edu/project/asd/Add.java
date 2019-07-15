@@ -6,7 +6,7 @@ import java.util.List;
 public class Add extends NumericOperation {
 
 	private float addNumber = 0.0f;
-	List<Reference> ref = new ArrayList<Reference>();
+	List<Content> ref = new ArrayList<Content>();
 
 	@Override
 	public String value() {
@@ -41,11 +41,11 @@ public class Add extends NumericOperation {
 	}
 
 	public void addContent(Content content) {
-		
+
 		addNumber += content.data();
-		if (content instanceof Reference) {
-			ref.add((Reference) content);
-		}
+
+		ref.add(content);
+
 	}
 
 }

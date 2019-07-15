@@ -7,7 +7,7 @@ public class Division extends NumericOperation {
 
 	private float quotient = 0.0f;
 	private int counter = 0;
-	List<Reference> ref = new ArrayList<Reference>();
+	List<Content> ref = new ArrayList<Content>();
 
 	@Override
 	public String value() {
@@ -44,12 +44,11 @@ public class Division extends NumericOperation {
 			if (counter == 0) {
 				quotient = content.data();
 				counter++;
-				ref.add((Reference) content);
+				ref.add(content);
 			} else {
 				quotient /= content.data();
-				ref.add((Reference) (content));
+				ref.add(content);
 			}
-
 		}
 	}
 
