@@ -155,7 +155,7 @@ public class Director {
 		writeInCellNumber(11, 2, 12);
 
 		writeInCellText(12, 1, "Installments:");
-		Division division = new Division();
+		Divide division = new Divide();
 		division.divideContent(new Reference(cell(9, 2)));
 		division.divideContent(new Reference(cell(10, 2)));
 		division.divideContent(new Reference(cell(11, 2)));

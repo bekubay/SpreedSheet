@@ -3,7 +3,7 @@ package mum.edu.project.asd;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Division extends NumericOperation {
+public class Divide extends NumericOperation {
 
 	private float quotient = 0.0f;
 	private int counter = 0;

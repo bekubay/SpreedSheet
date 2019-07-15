@@ -52,7 +52,7 @@ public class Group extends NumericOperation{
 			ref.add(content2);
 			break;
 		case "/":
-			Division division = new Division();
+			Divide division = new Divide();
 			division.divideContent(content1);
 			division.divideContent(content2);
 			ref.add(content1);
