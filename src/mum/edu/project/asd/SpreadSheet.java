@@ -3,6 +3,7 @@ package mum.edu.project.asd;
 
 
 public class SpreadSheet {
+	
 	private static final int size = 15;				// The spreadsheet is a size x size square of cells
 	private static Cell nullCell = new Cell();		// A fake cell we return when coordinates are out-of-bound
 
