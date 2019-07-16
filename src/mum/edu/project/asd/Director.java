@@ -62,6 +62,7 @@ public class Director {
 
 		setCell(2, 2, "118");
 
+		
 		setCell(3, 1, "Rental Car:");
 
 		// adding the total of rental car
@@ -97,6 +98,7 @@ public class Director {
 		}
 		spreadsheet.cell(7, 2).setContent(subTotal);
 		cell(7, 2).setContent(subTotal);
+		setCell(7, 3, "[1,2]+[2,2]");
 
 		// subtracting values
 		Subtract subtract = new Subtract();
@@ -122,6 +124,7 @@ public class Director {
 		setCell(7, 4, "This is just a reference to [1, 2], to test the \"Reference\" class and mechanism");
 		Reference ref = new Reference(cell(1, 2));
 
+		
 		// cell(7,2).setContent(ref);
 
 		setCell(8, 1, "Tax:"); // Tax factor label
@@ -163,7 +166,9 @@ public class Director {
 
 		spreadsheet.cell(12, 2).setContent(division);
 		cell(12, 2).setContent(division);
+		setCell(13, 1, "1+3+(6-4)*((2+6)+2)/2");
 		
+		setCell(14, 1, "[13,1]+(3-2)");
 
 	}
 
@@ -218,16 +223,18 @@ public class Director {
 		String[] str = null;
 		if (string.contains("+") || string.contains("-") || string.contains("*") || string.contains("/")) {
 
-			str = string.split("[-+*/]");
+			str = string.split("[,-\\[\\]+*/\\(\\)]");
 			formula = true;
+			
 		}
 
 		if (formula) {
 			for (String s : str) {
-
+				
 				if (!isNumber(s)) {
 					return false;
 				}
+				System.out.println(s);
 			}
 		}
 

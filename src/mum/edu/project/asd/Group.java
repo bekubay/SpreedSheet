@@ -1,6 +1,7 @@
 package mum.edu.project.asd;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -8,6 +9,7 @@ public class Group extends NumericOperation {
 
 	private float value;
 
+	SpreadSheet spreadSheet = new SpreadSheet();
 	List<NumericOperation> mOperations = new ArrayList<NumericOperation>();
 	List<String> myDataList = new ArrayList<String>();
 
@@ -42,7 +44,7 @@ public class Group extends NumericOperation {
 		for (int i = 0; i < (myDataList.size() - 1) / 2; i++) {
 			sBuffer.append("(");
 		}
-		
+
 		int count = 0;
 		sBuffer.append(myDataList.get(0));
 
@@ -51,7 +53,6 @@ public class Group extends NumericOperation {
 			count++;
 			if (count >= 2) {
 				count = 0;
-
 				sBuffer.append(")");
 			}
 		}
@@ -69,9 +70,6 @@ public class Group extends NumericOperation {
 
 		char[] tokens = expression.toCharArray();
 
-		for (Character character : tokens) {
-
-		}
 		// Stack for numbers: 'values'
 		Stack<Float> values = new Stack<Float>();
 
@@ -83,6 +81,32 @@ public class Group extends NumericOperation {
 			if (tokens[i] == ' ')
 				continue;
 
+			if (tokens[i] == '[') {
+
+				int counter = i;
+				StringBuffer stringBuffer = new StringBuffer();
+
+				stringBuffer.append("]");
+				String[] st = stringBuffer.toString().trim().split("[\\,\\[\\]]");
+
+				int row = 0;
+				int col = 0;
+				for (String s : st) {
+					System.out.println("hi " + s);
+				}
+				System.out.println(st.length);
+				for (int j = 1; j < st.length; j++) {
+
+					if (!isEmpty(st[i])) {
+						row = Integer.parseInt(st[j]);
+						row = Integer.parseInt(st[j + 1]);
+					}
+				}
+				Reference reference = new Reference(spreadSheet.getCell(1, 2));
+				//System.out.println("Workout " + reference.data());
+
+			}
+
 			if (tokens[i] >= '0' && tokens[i] <= '9') {
 				StringBuilder sb = new StringBuilder();
 				sb.append(tokens[i]);
@@ -92,6 +116,17 @@ public class Group extends NumericOperation {
 				}
 				values.push(Float.parseFloat(sb.toString()));
 				myDataList.add(sb.toString());
+			}
+
+			// Current token is an opening brace, push it to 'ops'
+			else if (tokens[i] == '(')
+				ops.push(tokens[i]);
+
+			// Closing brace encountered, solve entire brace
+			else if (tokens[i] == ')') {
+				while (ops.peek() != '(')
+					values.push(calculate(ops.pop(), values.pop(), values.pop()));
+				ops.pop();
 			}
 
 			else if (tokens[i] == '+' || tokens[i] == '-' || tokens[i] == '*' || tokens[i] == '/') {
@@ -120,6 +155,8 @@ public class Group extends NumericOperation {
 	// otherwise returns false.
 	public static boolean hasPrecedence(char op1, char op2) {
 
+		if (op2 == '(' || op2 == ')')
+			return false;
 		if ((op1 == '*' || op1 == '/') && (op2 == '+' || op2 == '-'))
 			return false;
 		else
@@ -150,6 +187,11 @@ public class Group extends NumericOperation {
 			return div.operate(a, b);
 		}
 		return 0;
+	}
+
+	private boolean isEmpty(String s) {
+		return s == "";
+
 	}
 
 	@Override
