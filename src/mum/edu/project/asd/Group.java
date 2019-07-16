@@ -7,9 +7,9 @@ import java.util.Stack;
 public class Group extends NumericOperation {
 
 	private float value;
-	NumericOperation numericOperation = new NumericOperation();
 
 	List<NumericOperation> mOperations = new ArrayList<NumericOperation>();
+	List<String> myDataList = new ArrayList<String>();
 
 	public List<NumericOperation> getNumericOperation() {
 		return mOperations;
@@ -23,8 +23,6 @@ public class Group extends NumericOperation {
 
 	}
 
-	List<Content> ref = new ArrayList<Content>();
-
 	@Override
 	public String value() {
 		// TODO Auto-generated method stub
@@ -34,7 +32,31 @@ public class Group extends NumericOperation {
 	@Override
 	public String formula() {
 		// TODO Auto-generated method stub
-		return null;
+
+		StringBuffer sBuffer = new StringBuffer("[");
+		for (String string : myDataList) {
+			sBuffer.append(string);
+		}
+		sBuffer.append("] --> ");
+
+		for (int i = 0; i < (myDataList.size() - 1) / 2; i++) {
+			sBuffer.append("(");
+		}
+		
+		int count = 0;
+		sBuffer.append(myDataList.get(0));
+
+		for (int i = 1; i < myDataList.size(); i++) {
+			sBuffer.append(myDataList.get(i));
+			count++;
+			if (count >= 2) {
+				count = 0;
+
+				sBuffer.append(")");
+			}
+		}
+
+		return sBuffer.toString();
 	}
 
 	@Override
@@ -47,6 +69,9 @@ public class Group extends NumericOperation {
 
 		char[] tokens = expression.toCharArray();
 
+		for (Character character : tokens) {
+
+		}
 		// Stack for numbers: 'values'
 		Stack<Float> values = new Stack<Float>();
 
@@ -66,6 +91,7 @@ public class Group extends NumericOperation {
 					sb.append(tokens[++i]);
 				}
 				values.push(Float.parseFloat(sb.toString()));
+				myDataList.add(sb.toString());
 			}
 
 			else if (tokens[i] == '+' || tokens[i] == '-' || tokens[i] == '*' || tokens[i] == '/') {
@@ -73,17 +99,18 @@ public class Group extends NumericOperation {
 				// token, which is an operator. Apply operator on top of 'ops'
 				// to top two elements in values stack
 				while (!ops.empty() && hasPrecedence(tokens[i], ops.peek()))
-					values.push(operate(ops.pop(), values.pop(), values.pop()));
+					values.push(calculate(ops.pop(), values.pop(), values.pop()));
 
 				// Push current token to 'ops'.
 				ops.push(tokens[i]);
+				myDataList.add(tokens[i] + "");
 			}
 		}
 
 		// Entire expression has been parsed at this point, apply remaining
 		// ops to remaining values
 		while (!ops.empty())
-			values.push(operate(ops.pop(), values.pop(), values.pop()));
+			values.push(calculate(ops.pop(), values.pop(), values.pop()));
 
 		// Top of 'values' contains result, return it
 		return values.pop();
@@ -102,21 +129,32 @@ public class Group extends NumericOperation {
 	// A utility method to apply an operator 'op' on operands 'a'
 	// and 'b'. Return the result.
 
-	@Override
-	public float operate(char op, float b, float a) {
+	public float calculate(char op, float b, float a) {
+
 		switch (op) {
 		case '+':
-			
-			return numericOperation.operate(op, a, b);
+			NumericOperation add = new Add();
+			mOperations.add(add);
+			return add.operate(a, b);
 		case '-':
-			return a - b;
+			NumericOperation sub = new Subtract();
+			mOperations.add(sub);
+			return sub.operate(a, b);
 		case '*':
-			return a * b;
+			NumericOperation multi = new Multiply();
+			mOperations.add(multi);
+			return multi.operate(a, b);
 		case '/':
-			if (b == 0)
-				throw new UnsupportedOperationException("Cannot divide by zero");
-			return a / b;
+			NumericOperation div = new Division();
+			mOperations.add(div);
+			return div.operate(a, b);
 		}
+		return 0;
+	}
+
+	@Override
+	public float operate(float a, float b) {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 

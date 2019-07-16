@@ -52,7 +52,7 @@ public class Division extends NumericOperation {
 		}
 	}
 	
-	public float operate(char c, float a, float b) {
+	public float operate( float a, float b) {
 		 
 		if (b == 0)
 			throw new UnsupportedOperationException("Cannot divide by zero");

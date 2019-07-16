@@ -53,7 +53,7 @@ public class Subtract extends NumericOperation {
 	}
 
 	@Override
-	public float operate(char c, float a, float b) {
+	public float operate(float a, float b) {
 		// TODO Auto-generated method stub
 		return a - b;
 	}

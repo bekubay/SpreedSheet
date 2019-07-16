@@ -52,8 +52,6 @@ public class Director {
 	{
 		setCell(1, 1, "Airfare:");
 
-		setCell(1, 5, "6+62+6/2*3");
-
 		setCell(1, 2, "485.15");
 
 		setCell(1, 3, "");
@@ -83,7 +81,7 @@ public class Director {
 
 		setCell(5, 1, "Meals:");
 
-		setCell(5, 2, "150");
+		setCell(5, 2, "115+2+3+4*5*6/3-7/8");
 
 		setCell(5, 3, "");
 
@@ -165,6 +163,7 @@ public class Director {
 
 		spreadsheet.cell(12, 2).setContent(division);
 		cell(12, 2).setContent(division);
+		
 
 	}
 
@@ -172,7 +171,7 @@ public class Director {
 
 		if (isNumber(string)) {
 			spreadsheet.cell(row, col).setContent(new Number(Float.parseFloat(string)));
-		} else if (isNumericExpression(string)) {
+		} else if (isExpression(string)) {
 			spreadsheet.cell(row, col).setContent(new Group(string));
 		} else {
 			spreadsheet.cell(row, col).setContent(new Text(string));
@@ -181,11 +180,7 @@ public class Director {
 
 	}
 
-	/*
-	 * public boolean interpret(String str) { try { Float.parseFloat(str); return
-	 * true; } catch (NumberFormatException e) { return false; } }
-	 */
-
+	
 	// check if it is numberic value or string
 	public boolean isNumber(String string) {
 		if (string == null || string.isEmpty()) {
@@ -216,7 +211,7 @@ public class Director {
 		return true;
 	}
 
-	public boolean isNumericExpression(String string) {
+	public boolean isExpression(String string) {
 
 		boolean formula = false;
 

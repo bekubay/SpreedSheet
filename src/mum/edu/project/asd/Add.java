@@ -47,8 +47,9 @@ public class Add extends NumericOperation {
 
 	}
 	
-	public float addOperatation(float a, float b) {
-		 
+	@Override
+	public float operate(float a, float b) {
+		// TODO Auto-generated method stub
 		return a+b;
 	}
 }
