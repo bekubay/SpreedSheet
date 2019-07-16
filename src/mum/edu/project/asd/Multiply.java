@@ -48,5 +48,10 @@ public class Multiply extends NumericOperation {
 
 		ref.add(content);
 	}
+	
+	public float operate(char c, float a, float b) {
+		 
+		return a*b;
+	}
 
 }

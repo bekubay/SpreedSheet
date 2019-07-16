@@ -1,5 +1,7 @@
 package mum.edu.project.asd;
 
+
+
 public class Director {
 	private SpreadSheet spreadsheet;
 
@@ -49,6 +51,8 @@ public class Director {
 	public void buildSample() // Build sample data for development purpose
 	{
 		setCell(1, 1, "Airfare:");
+
+		setCell(1, 5, "6+62+6/2*3");
 
 		setCell(1, 2, "485.15");
 
@@ -102,8 +106,8 @@ public class Director {
 			subtract.subContent(new Reference(spreadsheet.cell(i, 2)));
 		}
 
-		//spreadsheet.cell(7, 3).setContent(subtract);
-	//	cell(7, 3).setContent(subtract);
+		// spreadsheet.cell(7, 3).setContent(subtract);
+		// cell(7, 3).setContent(subtract);
 
 		// muliplying values
 		Multiply multiply = new Multiply();
@@ -111,8 +115,8 @@ public class Director {
 			multiply.multContent(new Reference(spreadsheet.cell(i, 2)));
 		}
 
-		//spreadsheet.cell(7, 4).setContent(multiply);
-		///cell(7, 4).setContent(multiply);
+		// spreadsheet.cell(7, 4).setContent(multiply);
+		/// cell(7, 4).setContent(multiply);
 
 		// writeInCellNumber(7, 2, spreadsheet.cell(1, 2).data());
 
@@ -140,11 +144,10 @@ public class Director {
 
 		spreadsheet.cell(9, 2).setContent(subtract2);
 		cell(9, 2).setContent(subtract2);
-		
+
 		Group group = new Group();
-		group.evaluate(new Number(1.0f), new Reference(cell(8, 2)), "*");
-		group.evaluate(new Reference(cell(7, 2)), group, "-");
-		
+		//group.evaluate(new Number(1.0f), new Reference(cell(8, 2)), "*");
+		//group.evaluate(new Reference(cell(7, 2)), group, "-");
 
 		setCell(10, 1, "Partners: ");
 
@@ -163,53 +166,76 @@ public class Director {
 		spreadsheet.cell(12, 2).setContent(division);
 		cell(12, 2).setContent(division);
 
-		
 	}
 
 	private void setCell(int row, int col, String string) {
 
-		if(interpret(string)) {
+		if (isNumber(string)) {
 			spreadsheet.cell(row, col).setContent(new Number(Float.parseFloat(string)));
-		}else {
+		} else if (isNumericExpression(string)) {
+			spreadsheet.cell(row, col).setContent(new Group(string));
+		} else {
 			spreadsheet.cell(row, col).setContent(new Text(string));
+
 		}
+
 	}
 
 	/*
 	 * public boolean interpret(String str) { try { Float.parseFloat(str); return
 	 * true; } catch (NumberFormatException e) { return false; } }
 	 */
-	
-	//check if it is numberic value or string
-	public static boolean interpret(String string) {
-	    if (string == null || string.isEmpty()) {
-	        return false;
-	    }
-	    int i = 0;
-	    int stringLength = string.length();
-	    if (string.charAt(0) == '-') {
-	        if (stringLength > 1) {
-	            i++;
-	        } else {
-	            return false;
-	        }
-	    }
-	    if (!Character.isDigit(string.charAt(i))
-	            || !Character.isDigit(string.charAt(stringLength - 1))) {
-	        return false;
-	    }
-	    i++;
-	    stringLength--;
-	    if (i >= stringLength) {
-	        return true;
-	    }
-	    for (; i < stringLength; i++) {
-	        if (!Character.isDigit(string.charAt(i))
-	                && string.charAt(i) != '.') {
-	            return false;
-	        }
-	    }
-	    return true;
+
+	// check if it is numberic value or string
+	public boolean isNumber(String string) {
+		if (string == null || string.isEmpty()) {
+			return false;
+		}
+		int i = 0;
+		int stringLength = string.length();
+		if (string.charAt(0) == '-') {
+			if (stringLength > 1) {
+				i++;
+			} else {
+				return false;
+			}
+		}
+		if (!Character.isDigit(string.charAt(i)) || !Character.isDigit(string.charAt(stringLength - 1))) {
+			return false;
+		}
+		i++;
+		stringLength--;
+		if (i >= stringLength) {
+			return true;
+		}
+		for (; i < stringLength; i++) {
+			if (!Character.isDigit(string.charAt(i)) && string.charAt(i) != '.') {
+				return false;
+			}
+		}
+		return true;
 	}
 
+	public boolean isNumericExpression(String string) {
+
+		boolean formula = false;
+
+		String[] str = null;
+		if (string.contains("+") || string.contains("-") || string.contains("*") || string.contains("/")) {
+
+			str = string.split("[-+*/]");
+			formula = true;
+		}
+
+		if (formula) {
+			for (String s : str) {
+
+				if (!isNumber(s)) {
+					return false;
+				}
+			}
+		}
+
+		return formula;
+	}
 }

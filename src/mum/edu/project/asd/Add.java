@@ -43,9 +43,12 @@ public class Add extends NumericOperation {
 	public void addContent(Content content) {
 
 		addNumber += content.data();
-
 		ref.add(content);
 
 	}
-
+	
+	public float addOperatation(float a, float b) {
+		 
+		return a+b;
+	}
 }
