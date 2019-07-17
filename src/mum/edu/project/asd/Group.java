@@ -1,28 +1,25 @@
 package mum.edu.project.asd;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
-public class Group extends NumericOperation {
+public class Group extends ArthemeticOperations {
 
 	private float value;
 
-	SpreadSheet spreadSheet = new SpreadSheet();
-	List<NumericOperation> mOperations = new ArrayList<NumericOperation>();
-	List<String> myDataList = new ArrayList<String>();
+	List<ArthemeticOperations> operations = new ArrayList<ArthemeticOperations>();
+	List<String> elementStrings = new ArrayList<String>();
 
-	public List<NumericOperation> getNumericOperation() {
-		return mOperations;
+	public List<ArthemeticOperations> getNumericOperation() {
+		return operations;
 	}
 
-	public Group(String string) {
-		this.value = evaluate(string);
+	public Group(String st, SpreadSheet spreadsheet) {
+		this.value = analyze(st, spreadsheet);
 	}
 
 	public Group() {
-
 	}
 
 	@Override
@@ -35,29 +32,29 @@ public class Group extends NumericOperation {
 	public String formula() {
 		// TODO Auto-generated method stub
 
-		StringBuffer sBuffer = new StringBuffer("[");
-		for (String string : myDataList) {
-			sBuffer.append(string);
+		StringBuffer sb = new StringBuffer("[");
+		for (String string : elementStrings) {
+			sb.append(string);
 		}
-		sBuffer.append("] --> ");
+		sb.append("] --> ");
 
-		for (int i = 0; i < (myDataList.size() - 1) / 2; i++) {
-			sBuffer.append("(");
+		for (int i = 0; i < (elementStrings.size() - 1) / 2; i++) {
+			sb.append("(");
 		}
 
 		int count = 0;
-		sBuffer.append(myDataList.get(0));
+		sb.append(elementStrings.get(0));
 
-		for (int i = 1; i < myDataList.size(); i++) {
-			sBuffer.append(myDataList.get(i));
+		for (int i = 1; i < elementStrings.size(); i++) {
+			sb.append(elementStrings.get(i));
 			count++;
 			if (count >= 2) {
 				count = 0;
-				sBuffer.append(")");
+				sb.append(")");
 			}
 		}
 
-		return sBuffer.toString();
+		return sb.toString();
 	}
 
 	@Override
@@ -66,93 +63,78 @@ public class Group extends NumericOperation {
 		return value;
 	}
 
-	public float evaluate(String expression) {
+	public float analyze(String exp, SpreadSheet spreadSheet) {
 
-		char[] tokens = expression.toCharArray();
+		char[] chars = exp.toCharArray();
 
-		// Stack for numbers: 'values'
+		// Stack to store number
 		Stack<Float> values = new Stack<Float>();
 
-		// Stack for Operators: 'ops'
-		Stack<Character> ops = new Stack<Character>();
+		// Stack to store operations
+		Stack<Character> operations = new Stack<Character>();
 
-		for (int i = 0; i < tokens.length; i++) {
-			// Current token is a whitespace, skip it
-			if (tokens[i] == ' ')
+		for (int i = 0; i < chars.length; i++) {
+
+			if (chars[i] == ' ')
 				continue;
 
-			if (tokens[i] == '[') {
+			if (chars[i] == '[') {
 
-				int counter = i;
-				StringBuffer stringBuffer = new StringBuffer();
+				int indexClose = exp.indexOf(']', i);
+				String cell = exp.substring(i + 1, indexClose);
 
-				stringBuffer.append("]");
-				String[] st = stringBuffer.toString().trim().split("[\\,\\[\\]]");
+				String[] cellCoordinate = cell.split(",");
+				int row = Integer.parseInt(cellCoordinate[0]);
+				int col = Integer.parseInt(cellCoordinate[1]);
+				Cell ref = spreadSheet.cell(row, col);
 
-				int row = 0;
-				int col = 0;
-				for (String s : st) {
-					System.out.println("hi " + s);
+				if (ref.value() == null || ref.value().trim().isEmpty()) {
+					values.push(0f);
+				} else {
+					values.push(Float.parseFloat(ref.value()));
 				}
-				System.out.println(st.length);
-				for (int j = 1; j < st.length; j++) {
+				elementStrings.add("[" + cell + "]");
 
-					if (!isEmpty(st[i])) {
-						row = Integer.parseInt(st[j]);
-						row = Integer.parseInt(st[j + 1]);
-					}
-				}
-				Reference reference = new Reference(spreadSheet.getCell(1, 2));
-				//System.out.println("Workout " + reference.data());
+				i = indexClose;
 
 			}
 
-			if (tokens[i] >= '0' && tokens[i] <= '9') {
+			if (chars[i] >= '0' && chars[i] <= '9') {
 				StringBuilder sb = new StringBuilder();
-				sb.append(tokens[i]);
+				sb.append(chars[i]);
 				// There may be more than one digits in number
-				while (i + 1 < tokens.length && tokens[i + 1] >= '0' && tokens[i + 1] <= '9') {
-					sb.append(tokens[++i]);
+				while (i + 1 < chars.length && chars[i + 1] >= '0' && chars[i + 1] <= '9') {
+					sb.append(chars[++i]);
 				}
 				values.push(Float.parseFloat(sb.toString()));
-				myDataList.add(sb.toString());
+				elementStrings.add(sb.toString());
 			}
 
-			// Current token is an opening brace, push it to 'ops'
-			else if (tokens[i] == '(')
-				ops.push(tokens[i]);
+			else if (chars[i] == '(')
+				operations.push(chars[i]);
 
-			// Closing brace encountered, solve entire brace
-			else if (tokens[i] == ')') {
-				while (ops.peek() != '(')
-					values.push(calculate(ops.pop(), values.pop(), values.pop()));
-				ops.pop();
+			else if (chars[i] == ')') {
+				while (operations.peek() != '(')
+					values.push(calculate(operations.pop(), values.pop(), values.pop()));
+				operations.pop();
 			}
 
-			else if (tokens[i] == '+' || tokens[i] == '-' || tokens[i] == '*' || tokens[i] == '/') {
-				// While top of 'ops' has same or greater precedence to current
-				// token, which is an operator. Apply operator on top of 'ops'
-				// to top two elements in values stack
-				while (!ops.empty() && hasPrecedence(tokens[i], ops.peek()))
-					values.push(calculate(ops.pop(), values.pop(), values.pop()));
+			else if (chars[i] == '+' || chars[i] == '-' || chars[i] == '*' || chars[i] == '/') {
 
-				// Push current token to 'ops'.
-				ops.push(tokens[i]);
-				myDataList.add(tokens[i] + "");
+				while (!operations.empty() && hasPrecedence(chars[i], operations.peek()))
+					values.push(calculate(operations.pop(), values.pop(), values.pop()));
+
+				operations.push(chars[i]);
+				elementStrings.add(chars[i] + "");
 			}
 		}
 
-		// Entire expression has been parsed at this point, apply remaining
-		// ops to remaining values
-		while (!ops.empty())
-			values.push(calculate(ops.pop(), values.pop(), values.pop()));
+		while (!operations.empty())
+			values.push(calculate(operations.pop(), values.pop(), values.pop()));
 
-		// Top of 'values' contains result, return it
 		return values.pop();
 	}
 
-	// Returns true if 'op2' has higher or same precedence as 'op1',
-	// otherwise returns false.
 	public static boolean hasPrecedence(char op1, char op2) {
 
 		if (op2 == '(' || op2 == ')')
@@ -163,41 +145,32 @@ public class Group extends NumericOperation {
 			return true;
 	}
 
-	// A utility method to apply an operator 'op' on operands 'a'
-	// and 'b'. Return the result.
-
 	public float calculate(char op, float b, float a) {
 
 		switch (op) {
 		case '+':
-			NumericOperation add = new Add();
-			mOperations.add(add);
-			return add.operate(a, b);
+			ArthemeticOperations add = new Add();
+			operations.add(add);
+			return add.evaluate(a, b);
 		case '-':
-			NumericOperation sub = new Subtract();
-			mOperations.add(sub);
-			return sub.operate(a, b);
+			ArthemeticOperations sub = new Subtract();
+			operations.add(sub);
+			return sub.evaluate(a, b);
 		case '*':
-			NumericOperation multi = new Multiply();
-			mOperations.add(multi);
-			return multi.operate(a, b);
+			ArthemeticOperations multi = new Multiply();
+			operations.add(multi);
+			return multi.evaluate(a, b);
 		case '/':
-			NumericOperation div = new Division();
-			mOperations.add(div);
-			return div.operate(a, b);
+			ArthemeticOperations div = new Division();
+			operations.add(div);
+			return div.evaluate(a, b);
 		}
 		return 0;
 	}
 
-	private boolean isEmpty(String s) {
-		return s == "";
-
-	}
-
 	@Override
-	public float operate(float a, float b) {
+	public float evaluate(float a, float b) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
 }

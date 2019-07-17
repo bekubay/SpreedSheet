@@ -3,11 +3,10 @@ package mum.edu.project.asd;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Division extends NumericOperation {
+public class Division extends ArthemeticOperations {
 
 	private float quotient = 0.0f;
 	private int counter = 0;
-	List<Content> ref = new ArrayList<Content>();
 
 	@Override
 	public String value() {
@@ -51,9 +50,9 @@ public class Division extends NumericOperation {
 			}
 		}
 	}
-	
-	public float operate( float a, float b) {
-		 
+
+	public float evaluate(float a, float b) {
+
 		if (b == 0)
 			throw new UnsupportedOperationException("Cannot divide by zero");
 		return a / b;

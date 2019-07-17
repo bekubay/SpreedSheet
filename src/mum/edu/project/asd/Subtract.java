@@ -3,11 +3,10 @@ package mum.edu.project.asd;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Subtract extends NumericOperation {
+public class Subtract extends ArthemeticOperations {
 
 	private float subResult = 0.0f;
 	private int counter = 0;
-	List<Content> ref = new ArrayList<Content>();
 
 	@Override
 	public String value() {
@@ -53,7 +52,7 @@ public class Subtract extends NumericOperation {
 	}
 
 	@Override
-	public float operate(float a, float b) {
+	public float evaluate(float a, float b) {
 		// TODO Auto-generated method stub
 		return a - b;
 	}

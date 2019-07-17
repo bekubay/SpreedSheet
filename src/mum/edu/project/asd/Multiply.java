@@ -3,10 +3,9 @@ package mum.edu.project.asd;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Multiply extends NumericOperation {
+public class Multiply extends ArthemeticOperations {
 
 	private float products = 1.0f;
-	List<Content> ref = new ArrayList<Content>();
 
 	public List<Content> getRef() {
 		return ref;
@@ -48,10 +47,10 @@ public class Multiply extends NumericOperation {
 
 		ref.add(content);
 	}
-	
-	public float operate(float a, float b) {
-		 
-		return a*b;
+
+	public float evaluate(float a, float b) {
+
+		return a * b;
 	}
 
 }

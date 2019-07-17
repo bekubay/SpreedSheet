@@ -1,11 +1,16 @@
 package mum.edu.project.asd;
 
-public class Reference extends Content{
+public class Reference extends Content {
 
-	private Cell cell ;
+	private Cell cell;
+
 	public Reference(Cell cell) {
-		//super(cell);		
+		// super(cell);
 		this.cell = cell;
+	}
+
+	public Reference() {
+		
 	}
 
 	@Override

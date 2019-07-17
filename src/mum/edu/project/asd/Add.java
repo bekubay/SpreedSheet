@@ -3,10 +3,9 @@ package mum.edu.project.asd;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Add extends NumericOperation {
+public class Add extends ArthemeticOperations {
 
 	private float addNumber = 0.0f;
-	List<Content> ref = new ArrayList<Content>();
 
 	@Override
 	public String value() {
@@ -46,10 +45,10 @@ public class Add extends NumericOperation {
 		ref.add(content);
 
 	}
-	
+
 	@Override
-	public float operate(float a, float b) {
+	public float evaluate(float a, float b) {
 		// TODO Auto-generated method stub
-		return a+b;
+		return a + b;
 	}
 }

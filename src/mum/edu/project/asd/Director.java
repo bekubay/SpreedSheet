@@ -35,7 +35,7 @@ public class Director {
 	}
 
 	// numerical expression sprint3
-	public void WriteInCellExpression(int r, int c, NumericOperation obj) {
+	public void WriteInCellExpression(int r, int c, ArthemeticOperations obj) {
 
 		// spreadsheet.cell(r, c).setContent(new NumericOperation());
 	}
@@ -96,9 +96,10 @@ public class Director {
 		for (int i = 1; i <= 5; i++) {
 			subTotal.addContent(new Reference(spreadsheet.cell(i, 2)));
 		}
-		spreadsheet.cell(7, 2).setContent(subTotal);
-		cell(7, 2).setContent(subTotal);
-		setCell(7, 3, "[1,2]+[2,2]");
+		//spreadsheet.cell(7, 2).setContent(subTotal);
+	//	cell(7, 2).setContent(subTotal);
+		setCell(7, 2, "[1,2]+[2,2]+[3,2]+[4,2]+[5,2]");
+		
 
 		// subtracting values
 		Subtract subtract = new Subtract();
@@ -143,9 +144,13 @@ public class Director {
 		subtract2.subContent(new Reference(cell(7, 2)));
 		subtract2.subContent(new Number(multiply2.data()));
 
-		spreadsheet.cell(9, 2).setContent(subtract2);
-		cell(9, 2).setContent(subtract2);
+		//spreadsheet.cell(9, 2).setContent(subtract2);
+	//	cell(9, 2).setContent(subtract2);
 
+		
+		setCell(9, 2, "[7,2]*(1-[8,2])");
+		
+		
 		Group group = new Group();
 		//group.evaluate(new Number(1.0f), new Reference(cell(8, 2)), "*");
 		//group.evaluate(new Reference(cell(7, 2)), group, "-");
@@ -166,6 +171,7 @@ public class Director {
 
 		spreadsheet.cell(12, 2).setContent(division);
 		cell(12, 2).setContent(division);
+		
 		setCell(13, 1, "1+3+(6-4)*((2+6)+2)/2");
 		
 		setCell(14, 1, "[13,1]+(3-2)");
@@ -177,7 +183,7 @@ public class Director {
 		if (isNumber(string)) {
 			spreadsheet.cell(row, col).setContent(new Number(Float.parseFloat(string)));
 		} else if (isExpression(string)) {
-			spreadsheet.cell(row, col).setContent(new Group(string));
+			spreadsheet.cell(row, col).setContent(new Group(string, spreadsheet));
 		} else {
 			spreadsheet.cell(row, col).setContent(new Text(string));
 
